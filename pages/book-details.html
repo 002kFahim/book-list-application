@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details - Book List App</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <h1>BookList</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="book-details-container" id="book-details">
+        <!-- Book details will be loaded here dynamically -->
+        <div class="loading">Loading book details...</div>
+      </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/wishlist.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get("id");
+
+        if (bookId) {
+          fetchBookDetails(bookId);
+        } else {
+          document.getElementById("book-details").innerHTML =
+            '<div class="error">Book not found</div>';
+        }
+      });
+
+      async function fetchBookDetails(bookId) {
+        try {
+          const book = await getBookById(bookId);
+          displayBookDetails(book);
+        } catch (error) {
+          document.getElementById(
+            "book-details"
+          ).innerHTML = `<div class="error">Error loading book details: ${error.message}</div>`;
+        }
+      }
+
+      function displayBookDetails(book) {
+        const isWishlisted = isBookInWishlist(book.id);
+        const wishlistIcon = isWishlisted ? "fas fa-heart" : "far fa-heart";
+
+        const bookDetailsHTML = `
+                <div class="book-details">
+                    <div class="book-cover">
+                        <img src="${book.formats["image/jpeg"]}" alt="${
+          book.title
+        } cover" onerror="this.src='../images/no-cover.jpg'">
+                    </div>
+                    <div class="book-info">
+                        <h2>${book.title}</h2>
+                        <p class="author">By ${book.authors
+                          .map((author) => author.name)
+                          .join(", ")}</p>
+                        <p class="book-id">ID: ${book.id}</p>
+                        <div class="book-subjects">
+                            <h3>Genres/Subjects:</h3>
+                            <ul>
+                                ${book.subjects
+                                  .map((subject) => `<li>${subject}</li>`)
+                                  .join("")}
+                            </ul>
+                        </div>
+                        <div class="book-languages">
+                            <h3>Languages:</h3>
+                            <p>${book.languages.join(", ")}</p>
+                        </div>
+                        <div class="book-download">
+                            <h3>Download:</h3>
+                            <ul>
+                                ${
+                                  book.formats["text/html"]
+                                    ? `<li><a href="${book.formats["text/html"]}" target="_blank">HTML</a></li>`
+                                    : ""
+                                }
+                                ${
+                                  book.formats["application/epub+zip"]
+                                    ? `<li><a href="${book.formats["application/epub+zip"]}" target="_blank">EPUB</a></li>`
+                                    : ""
+                                }
+                                ${
+                                  book.formats["application/x-mobipocket-ebook"]
+                                    ? `<li><a href="${book.formats["application/x-mobipocket-ebook"]}" target="_blank">Kindle</a></li>`
+                                    : ""
+                                }
+                                ${
+                                  book.formats["text/plain"]
+                                    ? `<li><a href="${book.formats["text/plain"]}" target="_blank">Plain Text</a></li>`
+                                    : ""
+                                }
+                            </ul>
+                        </div>
+                        <button class="wishlist-btn" id="wishlist-btn" onclick="toggleWishlistFromDetails(${
+                          book.id
+                        })">
+                            <i class="${wishlistIcon}"></i> ${
+          isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"
+        }
+                        </button>
+                        <a href="../index.html" class="back-btn">Back to Books</a>
+                    </div>
+                </div>
+            `;
+
+        document.getElementById("book-details").innerHTML = bookDetailsHTML;
+      }
+
+      // Function to toggle wishlist and update UI immediately
+      function toggleWishlistFromDetails(bookId) {
+        const isCurrentlyWishlisted = isBookInWishlist(bookId);
+        toggleWishlist(bookId);
+
+        // Update button text and icon
+        const wishlistBtn = document.getElementById("wishlist-btn");
+        if (wishlistBtn) {
+          if (!isCurrentlyWishlisted) {
+            wishlistBtn.innerHTML =
+              '<i class="fas fa-heart"></i> Remove from Wishlist';
+          } else {
+            wishlistBtn.innerHTML =
+              '<i class="far fa-heart"></i> Add to Wishlist';
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

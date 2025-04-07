@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist - Book List App</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <h1>BookList</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="wishlist.html" class="active">Wishlist</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h2 class="page-title">Your Wishlist</h2>
+
+      <section class="books-container" id="wishlist-books">
+        <!-- Wishlist books will be loaded here dynamically -->
+        <div class="no-books-message" id="no-wishlist-message">
+          Your wishlist is empty. Add some books from the home page!
+        </div>
+      </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/wishlist.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        displayWishlistBooks();
+      });
+    </script>
+  </body>
+</html>

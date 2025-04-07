@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book List App</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <h1>BookList</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="pages/wishlist.html">Wishlist</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="search-filter-container">
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search books by title..."
+          />
+        </div>
+        <div class="filter-container">
+          <select id="genre-filter" aria-label="Filter by genre">
+            <option value="">All Genres</option>
+            <!-- Genres will be populated dynamically -->
+          </select>
+        </div>
+      </section>
+
+      <section class="books-container" id="books-list">
+        <!-- Books will be loaded here dynamically -->
+        <div class="loading">Loading books...</div>
+      </section>
+
+      <section class="pagination-container">
+        <div class="pagination" id="pagination">
+          <!-- Pagination will be added here dynamically -->
+        </div>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
